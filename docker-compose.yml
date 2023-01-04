@@ -1,0 +1,23 @@
+version: "3.7"
+services:
+  php:
+    container_name: test-xdebug
+    build:
+      context: .
+      dockerfile: Dockerfile
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "8111:8111"
+    command: "php -S 0.0.0.0:8111 -t /demo"
+    volumes:
+      - ./xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+      - type: "bind"
+        source: "."
+        target: "/demo"
+      - type: "bind"
+        source: "/tmp/xdebug"
+        target: "/tmp/xdebug"
+networks:
+  default:
+    name: test-network
